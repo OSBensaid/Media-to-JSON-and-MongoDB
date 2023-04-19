@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import datetime
 
 from PIL import Image
 from pytesseract import *
@@ -17,42 +18,37 @@ mainFolder = os.getcwd()
 inputFolder = os.path.join(mainFolder, 'inputs')
 inputContent = os.listdir(inputFolder)
 outputFolder = os.path.join(mainFolder, 'output')
+log_path = os.path.join(outputFolder,  '_log.txt') 
 
 # Check if the output folder exists
 while not os.path.exists(outputFolder):
     os.makedirs(outputFolder)
+    # Create new file
+    open(log_path, "w")
 
 # Loop through the files in input folder content
 newArray = []
 for file in inputContent:
     file_path = os.path.join(inputFolder, file)
-
+    
     # Check if the file is an image file
     if file.endswith('.jpg') or file.endswith('.jpeg') or file.endswith('.png'):
         # Use PyTesseract to convert the text in the image to a txt file
-        
         img = Image.open(file_path)
         text = pytesseract.image_to_string(img)
-
-        # Save the text to a new txt file with the same name as the image file
-        txt_path = os.path.join(outputFolder, os.path.splitext(file)[0] + '_output.txt') 
-        with open(txt_path, 'w') as f:
-            newArray.append({'name': text.split('\n')[0], 'status': False})
-            f.write(text.split('\n')[0] + ' updated')
-
+        content = text.split('\n')[0]
     
     # Check if the file is an txt file.
     if file.endswith('.txt'):
-        # Save the text to a new txt file with the same name as the image file
-        txt_path = os.path.join(outputFolder, os.path.splitext(file)[0] + '_output.txt')
+        # Read the content of the source file
         with open(file_path, 'r') as source_file:
-            # Read the content of the source file
             content = source_file.read()
-            newArray.append({'name': content, 'status': False})
-            with open(txt_path, 'w') as f:
-                f.write(content + ' Updated')
+    
+    newArray.append({'name': content, 'status': False})
 
-
+    # Save the file path and date-time in log file
+    with open(log_path, 'a') as f:
+        f.write(datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ' ' + file_path + '\n')
 
 # Check if the file exists
 file_path = os.path.join(outputFolder, 'data.json')
