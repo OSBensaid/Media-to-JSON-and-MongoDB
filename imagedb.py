@@ -41,7 +41,7 @@ for file in inputContent:
             f.write(text + ' updated')
 
     
-    # Check if the file is an txt file
+    # Check if the file is an txt file.
     if file.endswith('.txt'):
         # Save the text to a new txt file with the same name as the image file
         txt_path = os.path.join(outputFolder, os.path.splitext(file)[0] + '_output.txt')
