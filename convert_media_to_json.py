@@ -1,13 +1,11 @@
+import json
 import os
 
 from PIL import Image
 from pytesseract import *
 
+# Additional installation for windows user
 # https://github.com/UB-Mannheim/tesseract/wiki
-# pip install pytesseract
-# pip install pillow
-
-
 pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 
@@ -20,7 +18,7 @@ inputFolder = os.path.join(mainFolder, 'inputs')
 inputContent = os.listdir(inputFolder)
 outputFolder = os.path.join(mainFolder, 'output')
 
-# Check if the folder exists
+# Check if the output folder exists
 while not os.path.exists(outputFolder):
     os.makedirs(outputFolder)
 
@@ -50,6 +48,26 @@ for file in inputContent:
             content = source_file.read() + ' updated'
             with open(txt_path, 'w') as f:
                 f.write(content)
+
+
+# Check if the file exists
+file_path = os.path.join(outputFolder, 'data.json')
+while not os.path.exists(file_path):
+    with open(file_path, "w") as f:
+        json.dump([], f)
+
+# Load existing data from JSON file
+with open(file_path, 'r') as file:
+    data = json.load(file)
+
+# Append new data to Python object
+new_data = {'name': 'John', 'age': 30}
+data.append(new_data)
+
+# Write updated object to JSON file
+with open(file_path, 'w') as file:
+    json.dump(data, file)
+
 
 # Display the successful meesage
 print("Finished converting successfully!")

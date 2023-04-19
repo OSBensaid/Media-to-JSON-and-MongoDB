@@ -1,4 +1,4 @@
-Media Data to JSON Converter
+## Media Data to JSON Converter
 
 This Python script converts media data (image and text) into JSON format. It uses the Tesseract OCR engine to extract text from images.
 Installation
@@ -12,10 +12,14 @@ You can install them using pip by running the following command in the terminal:
 
 pip install pytesseract pillow
 
+Note
+
+    For Windows users, additional installation may be required for Tesseract OCR. Please refer to the Tesseract OCR GitHub repository for more information.
+
 Usage
 
     Place the media files you want to convert in the "inputs" folder.
-    Run the script "convert_media_to_json.py" in the command line.
+    Run the script "python convert_media_to_json.py" in the command line.
     The converted JSON files will be stored in the "output" folder.
 
 The script checks if the media file is an image or a text file. If it is an image file, it extracts the text using the Tesseract OCR engine and saves it to a JSON file with the same name as the image file. If it is a text file, it simply saves the content to a JSON file with the same name as the text file.
