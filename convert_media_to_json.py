@@ -10,7 +10,7 @@ pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 
 # Change the directory & Get the current working 
-os.chdir('./scripts')
+# os.chdir('./scripts')
 mainFolder = os.getcwd()
 
 # Set the paths for the folders
@@ -23,6 +23,7 @@ while not os.path.exists(outputFolder):
     os.makedirs(outputFolder)
 
 # Loop through the files in input folder content
+newArray = []
 for file in inputContent:
     file_path = os.path.join(inputFolder, file)
 
@@ -36,7 +37,8 @@ for file in inputContent:
         # Save the text to a new txt file with the same name as the image file
         txt_path = os.path.join(outputFolder, os.path.splitext(file)[0] + '_output.txt') 
         with open(txt_path, 'w') as f:
-            f.write(text + ' updated')
+            newArray.append({'name': text.split('\n')[0], 'status': False})
+            f.write(text.split('\n')[0] + ' updated')
 
     
     # Check if the file is an txt file.
@@ -45,28 +47,30 @@ for file in inputContent:
         txt_path = os.path.join(outputFolder, os.path.splitext(file)[0] + '_output.txt')
         with open(file_path, 'r') as source_file:
             # Read the content of the source file
-            content = source_file.read() + ' updated'
+            content = source_file.read()
+            newArray.append({'name': content, 'status': False})
             with open(txt_path, 'w') as f:
-                f.write(content)
+                f.write(content + ' Updated')
+
 
 
 # Check if the file exists
 file_path = os.path.join(outputFolder, 'data.json')
 while not os.path.exists(file_path):
     with open(file_path, "w") as f:
-        json.dump([], f)
+        json.dump(newArray, f)
 
 # Load existing data from JSON file
-with open(file_path, 'r') as file:
-    data = json.load(file)
+# with open(file_path, 'r') as file:
+#     data = json.load(file)
 
-# Append new data to Python object
-new_data = {'name': 'John', 'age': 30}
-data.append(new_data)
+# # Append new data to Python object
+# data.append(newArray)
 
-# Write updated object to JSON file
-with open(file_path, 'w') as file:
-    json.dump(data, file)
+# # Write updated object to JSON file
+# with open(file_path, 'w') as file:
+#     json.dump(data, file)
+
 
 
 # Display the successful meesage
