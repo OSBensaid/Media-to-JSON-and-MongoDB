@@ -60,24 +60,23 @@ while not os.path.exists(file_path):
 # Load existing data from JSON file
 with open(file_path, 'r') as file:
     data = json.load(file)
-    # Create a MongoClient instance
+    # Connect to MongoDB
     client = pymongo.MongoClient("mongodb://localhost:27017/")
-
-    # Create a database instance
     db = client["school"]
-
-    # Create a collection instance
     collection = db["students"]
 
-    # Insert the list of documents into the collection
-    result = collection.insert_many(data)
-
-# # Append new data to Python object
-# data.append(newArray)
-
-# # Write updated object to JSON file
-# with open(file_path, 'w') as file:
-#     json.dump(data, file)
-
+    # retrieve all documents in the collection
+    original_names = [item['name'] for item in collection.find({}, {"_id": 0})]
+    unique_objects = [item for item in newArray if item['name'] not in original_names]
+    
+    # insert all the documents if the value does not exist in any document
+    if unique_objects:
+        # Insert the list of documents into the collection
+        collection.insert_many(unique_objects)
+        length_of_list = len(unique_objects)
+        print(length_of_list , 'New documents inserted successfully.')
+    else:
+        print('Value exists in at least one document, not inserting.')
+        
 # Display the successful meesage
 print("Completed successfully!")
