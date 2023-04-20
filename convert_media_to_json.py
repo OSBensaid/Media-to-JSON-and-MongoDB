@@ -1,11 +1,15 @@
 import json
 import os
+import subprocess
 from datetime import datetime
 
 import pymongo
 from colorama import Fore, Style, init
 from PIL import Image
 from pytesseract import *
+
+# Install required packages
+subprocess.check_call(["pip", "install", "-r", "requirements.txt"])
 
 # Additional installation for windows user
 # https://github.com/UB-Mannheim/tesseract/wiki
