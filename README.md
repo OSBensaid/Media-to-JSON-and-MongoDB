@@ -1,4 +1,4 @@
-## Media Data to JSON Converter
+## Image and Text File to JSON and MongoDB
 
 This Python script takes a folder with image and text files and creates a JSON file that can be imported into a MongoDB database. Each file is read, and the content of the files is converted into an object that is added to an array of objects. The resulting array of objects is saved to a JSON file and checked against existing data in a MongoDB database.
 Getting Started
