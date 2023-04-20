@@ -40,6 +40,10 @@ How it Works
     10- The script compares the names of the new objects to the names in the existing documents and creates a list of unique objects.
     11- The script inserts the unique objects into the collection and prints a success message.
 
+Screenshot
+
+![](https://raw.githubusercontent.com/OSBensaid/Media-to-JSON-and-MongoDB/main/screenshots/Screenshot_2.png)
+
 Authors
 
     Oussama Bensaid - OSBensaid
