@@ -2,6 +2,7 @@ import json
 import os
 from datetime import datetime
 
+import pymongo
 from PIL import Image
 from pytesseract import *
 
@@ -57,8 +58,19 @@ while not os.path.exists(file_path):
         json.dump(newArray, f)
 
 # Load existing data from JSON file
-# with open(file_path, 'r') as file:
-#     data = json.load(file)
+with open(file_path, 'r') as file:
+    data = json.load(file)
+    # Create a MongoClient instance
+    client = pymongo.MongoClient("mongodb://localhost:27017/")
+
+    # Create a database instance
+    db = client["school"]
+
+    # Create a collection instance
+    collection = db["students"]
+
+    # Insert the list of documents into the collection
+    result = collection.insert_many(data)
 
 # # Append new data to Python object
 # data.append(newArray)
@@ -67,7 +79,5 @@ while not os.path.exists(file_path):
 # with open(file_path, 'w') as file:
 #     json.dump(data, file)
 
-
-
 # Display the successful meesage
-print("Finished converting successfully!")
+print("Completed successfully!")
