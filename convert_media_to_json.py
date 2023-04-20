@@ -4,7 +4,7 @@ import subprocess
 from datetime import datetime
 
 import pymongo
-from colorama import Fore, Style, init
+from colorama import Fore, Style
 from PIL import Image
 from pytesseract import *
 
@@ -43,14 +43,17 @@ for file in inputContent:
         img = Image.open(file_path)
         text = pytesseract.image_to_string(img)
         content = text.split('\n')[0]
+        newArray.append({'name': content, 'status': False})
     
     # Check if the file is an txt file.
     if file.endswith('.txt'):
         # Read the content of the source file
         with open(file_path, 'r') as source_file:
-            content = source_file.read()
-    
-    newArray.append({'name': content, 'status': False})
+            # Read the contents of the file and split it into lines
+            lines = source_file.read().splitlines()
+            for line in lines:
+                # Append the object to the array
+                newArray.append({'name': line, 'status': False})
 
     # Save the file path and date-time in log file
     with open(log_path, 'a') as f:
