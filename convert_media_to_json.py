@@ -1,6 +1,5 @@
 import json
 import os
-import subprocess
 from datetime import datetime
 
 import pymongo
@@ -8,12 +7,22 @@ from colorama import Fore, Style
 from PIL import Image
 from pytesseract import *
 
-# Install required packages
-subprocess.check_call(["pip", "install", "-r", "requirements.txt"])
-
 # Additional installation for windows user
 # https://github.com/UB-Mannheim/tesseract/wiki
 pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
+import pyfiglet
+
+script_name = "Convert Media to MongoDB"
+
+# Generate the ASCII art for the script name
+art = pyfiglet.figlet_format(script_name, font="bubble")
+print('*'*60)
+print("\t\tScript: Media to MongoDB")
+print("\t\tVersion: 1.0.1")
+print("\t\tAuthor: Oussama Bensaid")
+print("\t\tLicense: MIT")
+print('*'*60)
 
 
 # Change the directory & Get the current working 
@@ -64,6 +73,7 @@ file_path = os.path.join(outputFolder, 'data.json')
 while not os.path.exists(file_path):
     with open(file_path, "w") as f:
         json.dump(newArray, f)
+print(f"{Fore.GREEN}- Finished media converting... {Style.RESET_ALL}")
 
 # Load existing data from JSON file
 with open(file_path, 'r') as file:
@@ -72,16 +82,19 @@ with open(file_path, 'r') as file:
     client = pymongo.MongoClient("mongodb://localhost:27017/")
     db = client["school"]
     collection = db["students"]
+    print(f"{Fore.GREEN}- Connected to database... {Style.RESET_ALL}")
 
     # retrieve all documents in the collection
     original_names = [item['name'] for item in collection.find({}, {"_id": 0})]
     unique_objects = [item for item in newArray if item['name'] not in original_names]
-    
+    print(f"{Fore.GREEN}- Generate JSON file... {Style.RESET_ALL}")
+
     # insert all the documents if the value does not exist in any document
     if unique_objects:
         # Insert the list of documents into the collection
         collection.insert_many(unique_objects)
-        print(f"{Fore.GREEN} {len(unique_objects)} New documents inserted successfully. {Style.RESET_ALL}")
+        print(f"{Fore.GREEN}- {len(unique_objects)} New documents inserted successfully. {Style.RESET_ALL}")
     else:
-        print(f"{Fore.RED}Value exists in at least one document, not inserting.{Style.RESET_ALL}")
+        print(f"{Fore.RED}- Value exists in at least one document, not inserting.{Style.RESET_ALL}")
    
+print('\n\n\n')
