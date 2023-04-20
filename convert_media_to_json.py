@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 
 import pymongo
+from colorama import Fore, Style, init
 from PIL import Image
 from pytesseract import *
 
@@ -73,10 +74,7 @@ with open(file_path, 'r') as file:
     if unique_objects:
         # Insert the list of documents into the collection
         collection.insert_many(unique_objects)
-        length_of_list = len(unique_objects)
-        print(length_of_list , 'New documents inserted successfully.')
+        print(f"{Fore.GREEN} {len(unique_objects)} New documents inserted successfully. {Style.RESET_ALL}")
     else:
-        print('Value exists in at least one document, not inserting.')
-        
-# Display the successful meesage
-print("Completed successfully!")
+        print(f"{Fore.RED}Value exists in at least one document, not inserting.{Style.RESET_ALL}")
+   
